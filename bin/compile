@@ -1,0 +1,26 @@
+#!/bin/sh
+
+
+arrow() {
+  echo '----->' "$@"
+}
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+
+BUILD_DIR=$1
+arrow "Installing driver config"
+mkdir -p "${BUILD_DIR}/.apt/usr/lib/odbc/conf/" | indent
+cp libamazonredshiftodbc64.so "${BUILD_DIR}/.apt/usr/lib/libamazonredshiftodbc64.so" | indent
+cp amazon.redshiftodbc.ini "${BUILD_DIR}/.apt/usr/lib/odbc/conf/amazon.redshiftodbc.ini" | indent
+
+
+arrow "Adding profile.d script"
+mkdir -p "${BUILD_DIR}/.profile.d" | indent
+cp .profile.d/configure-odbc.sh "${BUILD_DIR}/.profile.d" | indent
+
+
+arrow "FINISH"
+
